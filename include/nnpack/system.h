@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#if defined(__linux__) || defined(__native_client__)
+#if defined(__linux__) || defined(__FreeBSD__) || defined(__native_client__)
 	#include <time.h>
 	#include <unistd.h>
 	#include <sys/mman.h>
@@ -17,7 +17,7 @@
 #endif
 
 inline static double read_timer() {
-#if defined(__linux__) || defined(__native_client__)
+#if defined(__linux__) || defined(__FreeBSD__) || defined(__native_client__)
 	struct timespec ts;
 	int result = clock_gettime(CLOCK_MONOTONIC, &ts);
 	assert(result == 0);

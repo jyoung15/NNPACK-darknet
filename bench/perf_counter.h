@@ -8,7 +8,7 @@
 	#include <unistd.h>
 	#include <sys/ioctl.h>
 	#include <linux/perf_event.h>
-#elif defined(__native_client__)
+#elif defined(__native_client__) || defined(__FreeBSD__)
 	#include <sys/time.h>
 #elif defined(EMSCRIPTEN)
 	#include <emscripten.h>
@@ -48,7 +48,7 @@ static inline bool read_perf_counter(int file_descriptor, unsigned long long out
 	return read(file_descriptor, output, sizeof(*output)) == sizeof(*output);
 #elif defined(EMSCRIPTEN) || (defined(__native_client__) && !defined(__x86_64__))
 	return false;
-#elif defined(__native_client__)
+#elif defined(__native_client__) || defined(__FreeBSD__)
 	unsigned int lo, hi;
 	asm volatile(
 		"XORL %%eax, %%eax;"
@@ -86,7 +86,7 @@ static inline bool read_timer(unsigned long long output[restrict static 1]) {
 
 	*output = mach_absolute_time() * timebase_info.numer / timebase_info.denom;
 	return true;
-#elif defined(__native_client__)
+#elif defined(__native_client__) || defined(__FreeBSD__)
 	struct timeval walltime;
 	if (gettimeofday(&walltime, NULL) == 0) {
 		*output = walltime.tv_sec * 1000000000ull + walltime.tv_usec * 1000ull;

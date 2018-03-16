@@ -50,11 +50,7 @@ static inline bool read_perf_counter(int file_descriptor, unsigned long long out
 	return read(file_descriptor, output, sizeof(*output)) == sizeof(*output);
 #elif defined(EMSCRIPTEN) || (defined(__native_client__) && !defined(__x86_64__))
 	return false;
-<<<<<<< HEAD
-#elif defined(__native_client__) || defined(__FreeBSD__)
-=======
-#elif (defined(__native_client__) || defined(__ANDROID__)) && (defined(__x86_64__) || defined(__i386__))
->>>>>>> master
+#elif (defined(__native_client__) || defined(__ANDROID__) || defined(__FreeBSD__)) && (defined(__x86_64__) || defined(__i386__))
 	unsigned int lo, hi;
 	asm volatile(
 		"XORL %%eax, %%eax;"
